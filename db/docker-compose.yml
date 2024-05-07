@@ -1,0 +1,12 @@
+version: "3.9" # Specify Docker Compose version
+
+services:
+  mongo:
+    build: .
+    ports:
+      - "27017:27017" # Map container port 27017 to host port 27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=fdj # Optional: Set root user (adjust password if needed)
+      - MONGO_INITDB_ROOT_PASSWORD=fdj # Optional: Set root password
+    volumes:
+      - ./data:data/mongo-dump

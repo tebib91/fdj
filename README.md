@@ -37,6 +37,20 @@ Create a .env file in the api directory and configure your environment variables
 
 ### Running the Application
 
+Start the db:
+
+```bash
+cd db
+docker compose up --build
+```
+
+To restore data to mongo run commande inside mongoDb container:
+
+```bash
+cd mongo-dump
+ mongorestore --authenticationDatabase=admin --db fdj --username fdj --password fdj .
+```
+
 Start the backend server:
 
 ```bash
