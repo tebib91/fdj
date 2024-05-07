@@ -1,0 +1,15 @@
+version: "3.9" # Specify Docker Compose version
+
+services:
+  mongo:
+    image: mongo:4.4.29 # Use the official MongoDB image
+    ports:
+      - "27017:27017" # Map container port 27017 to host port 27017
+    volumes:
+      - mongo-data:/data/db # Persist data volume for MongoDB
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=fdj # Optional: Set root user (adjust password if needed)
+      - MONGO_INITDB_ROOT_PASSWORD=fdj # Optional: Set root password
+
+volumes:
+  mongo-data: # Define a named volume for persisting MongoDB data

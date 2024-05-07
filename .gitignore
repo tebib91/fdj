@@ -1,0 +1,21 @@
+# Node.js dependencies
+api/node_modules/
+client/node_modules/
+
+# Compiled TypeScript files
+dist/
+
+# Angular build artifacts
+client/dist/
+
+# Environment variables file
+.env
+
+# IDE/Editor specific files
+.vscode/
+.idea/
+*.iml
+
+# Miscellaneous
+.DS_Store
+Thumbs.db
