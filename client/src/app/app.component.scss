@@ -15,6 +15,10 @@ main {
         background-color: var(--list-section);
         border-radius: 20px;
 
+        img {
+            cursor: pointer;
+        }
+
         p {
             color: var(--main-color);
             margin: 0;

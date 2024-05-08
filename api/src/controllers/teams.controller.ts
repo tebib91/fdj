@@ -1,28 +1,55 @@
 import { Request, Response } from "express";
-import { getTeamId } from "../models/teams";
+
+import { TeamModel, getTeams } from "../models/teams"; // Import Team model
+
+export const getTeamsAll = async (
+  _req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const teams = await getTeams();
+    console.info(`Fetched ${teams?.length} Teams`);
+    res.json(teams);
+  } catch (error) {
+    // Handle other unexpected errors
+    console.error("Unexpected error:", error);
+    throw error;
+  }
+};
 
 export const getTeamById = async (
   req: Request,
   res: Response
-): Promise<void> => {
+): Promise<Response | undefined> => {
+  const { id } = req.params;
   try {
-    const id: string = req.params.id as string;
-
-    console.info(`Searching team with id '${id}'...`);
-
-    // Perform the search query using regex for case-insensitive search
-    const team = await getTeamId(id);
-
+    const team = await TeamModel.findById(id);
     if (!team) {
-      // Log that no team were found
-      console.info(`No team found matching '${id}'`);
-      res.json(undefined); // Return an empty array as no team were found
-      return;
+      return res.status(404).json({ message: "Team not found" });
     }
-    console.info(`Found ${team} leagues matching '${id}'`);
     res.json(team);
-  } catch (error) {
-    console.error("Error searching team:", error);
-    res.status(500).json({ message: "Internal server error" });
+  } catch (err) {
+    console.error("Error fetching team by ID:", err);
+    res.status(500).json({ message: "Error fetching team" });
+  }
+};
+
+// Assuming you have a way to link teams to a league (e.g., a 'leagueId' field)
+export const getTeamsByLeagueId = async (
+  req: Request,
+  res: Response
+): Promise<Response | undefined> => {
+  const { leagueId } = req.params;
+  try {
+    const teams = await TeamModel.find({ leagueId });
+    if (!teams) {
+      return res
+        .status(404)
+        .json({ message: "No teams found for this league" });
+    }
+    res.json(teams);
+  } catch (err) {
+    console.error("Error fetching teams by league ID:", err);
+    res.status(500).json({ message: "Error fetching teams" });
   }
 };

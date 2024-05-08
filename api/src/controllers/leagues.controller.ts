@@ -1,14 +1,18 @@
 import { Request, Response } from "express";
-import { getLeagueByName, getLeagues } from "../models/leagues";
+import {
+  getLeagueById,
+  getLeagueByName,
+  getLeagues,
+  getTeamLeagueById,
+} from "../models/leagues";
 
 export const getLeaguesAll = async (
   _req: Request,
   res: Response
 ): Promise<void> => {
   try {
-    // Create new service instance here
     const leagues = await getLeagues();
-    console.info(`Fetched ${leagues.length} leagues`);
+    console.info(`Fetched ${leagues?.length} leagues`);
     res.json(leagues);
   } catch (error) {
     // Handle other unexpected errors
@@ -25,7 +29,6 @@ export const searchLeagues = async (
     const searchTerm: string = req.query.name as string;
     console.info(`Searching leagues with name '${searchTerm}'...`);
 
-    // Perform the search query using regex for case-insensitive search
     const leagues = await getLeagueByName(searchTerm);
 
     if (!leagues) {
@@ -34,10 +37,48 @@ export const searchLeagues = async (
       res.json([]); // Return an empty array as no leagues were found
       return;
     }
-    console.info(`Found ${leagues} leagues matching '${searchTerm}'`);
+    console.info(`Found ${leagues.length} leagues matching '${searchTerm}'`);
     res.json(leagues);
   } catch (error) {
     console.error("Error searching leagues:", error);
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const getLeagueId = async (
+  req: Request,
+  res: Response
+): Promise<Response | undefined> => {
+  const { id } = req.params;
+  console.log({ id });
+
+  try {
+    const league = await getLeagueById(id); // Populate teams
+    if (!league) {
+      return res.status(404).json({ message: "League not found" });
+    }
+    res.json(league);
+  } catch (err) {
+    console.error("Error fetching league by ID:", err);
+    res.status(500).json({ message: "Error fetching league" });
+  }
+};
+
+export const getTeamsByLeagueId = async (
+  req: Request,
+  res: Response
+): Promise<Response | undefined> => {
+  const { id } = req.params;
+  console.log({ id });
+
+  try {
+    const league = await getTeamLeagueById(id); // Populate teams
+    if (!league) {
+      return res.status(404).json({ message: "League not found" });
+    }
+    res.json(league);
+  } catch (err) {
+    console.error("Error fetching league by ID:", err);
+    res.status(500).json({ message: "Error fetching league" });
   }
 };

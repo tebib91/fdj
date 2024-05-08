@@ -1,4 +1,13 @@
-<div class="team-box" *ngIf="team$ | async as team">
-  <img [src]="team.thumbnail" [alt]="team.name" />
-  <!-- {{ team.name }} -->
+<div *ngIf="leagueTeams$ | async as leagueTeams" class="wrapper">
+  <p>{{ leagueTeams.name }}</p>
+  <div class="list-teams">
+    <div
+      class="team-box"
+      *ngFor="let item of leagueTeams.teams"
+      (click)="gotoPlayers(item._id)"
+    >
+      <img [src]="item.thumbnail" [alt]="item.name" />
+      <p>{{ item.name }}</p>
+    </div>
+  </div>
 </div>

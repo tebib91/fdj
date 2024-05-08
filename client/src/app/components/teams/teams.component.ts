@@ -1,24 +1,28 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ActivatedRoute,
+  ParamMap,
+  Router,
+  RouterModule,
+} from '@angular/router';
 import { ApiService } from '../../services/api.services';
 import { Team } from '../../models/team.interface';
 import { Observable, switchMap } from 'rxjs';
 import { HttpClientModule } from '@angular/common/http';
+import { League } from '../../models/league.interface';
 
 @Component({
   selector: 'app-teams',
   standalone: true,
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule, HttpClientModule, RouterModule],
   providers: [ApiService],
   templateUrl: './teams.component.html',
   styleUrl: './teams.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamsComponent {
-  @Input({ required: true }) teamId!: string;
-
-  team$: Observable<Team> | undefined;
+  leagueTeams$: Observable<League> | undefined;
 
   constructor(
     private TeamService: ApiService,
@@ -26,8 +30,15 @@ export class TeamsComponent {
     private route: ActivatedRoute
   ) {}
   ngOnInit() {
-    console.log('adsdas', { teamid: this.teamId });
+    console.log('test');
+    this.leagueTeams$ = this.route.paramMap.pipe(
+      switchMap((params: ParamMap) => {
+        return this.TeamService.getTeamsByLeagueId(params.get('id')!);
+      })
+    );
+  }
 
-    this.team$ = this.TeamService.getTeamsById(this.teamId);
+  gotoPlayers(teamId: string) {
+    this.router.navigate(['/team', teamId]);
   }
 }

@@ -9,31 +9,53 @@ export interface ILeague extends Document {
 const LeagueSchema = new mongoose.Schema({
   name: { type: String, required: true },
   sport: { type: String, required: true },
-  teams: [{ type: Schema.Types.ObjectId, ref: "Team" }],
+  teams: [{ type: Schema.Types.ObjectId, ref: "teams" }],
 });
 
 export const LeagueModel = mongoose.model<ILeague>("leagues", LeagueSchema);
 
-export const getLeagues = () => LeagueModel.find();
-export const getLeagueById = (id: string) => LeagueModel.findOne({ id });
-export const getLeagueByName = (name: string): Promise<ILeague[] | null> =>
-  LeagueModel.find({
-    name: { $regex: name, $options: "i" },
-  });
+export const getLeagues = async (): Promise<ILeague[] | null> => {
+  try {
+    return await LeagueModel.find(); // Populate teams
+  } catch (err) {
+    console.error("Error fetching leagues:", err);
+    return null; // Or handle error appropriately
+  }
+};
 
-// TODO: check aggregate error on $search
-export const searchName = (name: string) =>
-  LeagueModel.aggregate([
-    {
-      $search: {
-        autocomplete: {
-          query: `${name}`,
-          path: "name",
-          fuzzy: {
-            maxEdits: 2,
-            prefixLength: 3,
-          },
-        },
-      },
-    },
-  ]);
+export const getLeagueById = async (id: string): Promise<ILeague | null> => {
+  try {
+    console.log({ id });
+
+    return await LeagueModel.findById(id); // Populate teams
+  } catch (err) {
+    console.error("Error fetching league by ID:", err);
+    return null; // Or handle error appropriately
+  }
+};
+
+export const getTeamLeagueById = async (
+  id: string
+): Promise<ILeague | null> => {
+  try {
+    console.log({ id });
+
+    return await LeagueModel.findById(id).populate("teams"); // Populate teams
+  } catch (err) {
+    console.error("Error fetching league by ID:", err);
+    return null; // Or handle error appropriately
+  }
+};
+
+export const getLeagueByName = async (
+  name: string
+): Promise<ILeague[] | null> => {
+  try {
+    return await LeagueModel.find({
+      name: { $regex: name, $options: "i" }, // Case-insensitive search
+    }); // Populate teams
+  } catch (err) {
+    console.error("Error fetching leagues by name:", err);
+    return null; // Or handle error appropriately
+  }
+};

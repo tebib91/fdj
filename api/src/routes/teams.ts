@@ -1,9 +1,12 @@
 import express from "express";
 
-import { getTeamById } from "../controllers/teams.controller";
+import { getTeamById, getTeamsAll } from "../controllers/teams.controller";
+import { getPlayersByTeamId } from "../models/players";
 
 const router = express.Router();
 
-router.get("/:id", getTeamById);
+router.get("/all", getTeamsAll);
+router.get("/:idTeam", getTeamById);
+router.get("/:idTeam/players", getPlayersByTeamId);
 
 export default router;

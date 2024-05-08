@@ -11,11 +11,8 @@
   </div>
   <ng-container *ngIf="leagues$ | async as leagues">
     <ul class="list-leagues" *ngIf="leagues.length > 0; else noLeagues">
-      <li
-        *ngFor="let item of leagues; trackBy: trackById"
-        (click)="getTeams(item.teams)"
-      >
-        <a>{{ item.name }}</a>
+      <li *ngFor="let item of leagues; trackBy: trackById">
+        <a [routerLink]="['league', item._id]">{{ item.name }}</a>
       </li>
     </ul>
     <ng-template #noLeagues>
@@ -25,13 +22,5 @@
     </ng-template>
   </ng-container>
 
-  <ng-container *ngIf="selectedLeague">
-    <h2>Teams</h2>
-    <div class="list-teams">
-      <app-teams
-        *ngFor="let team of getTeams(selectedLeague)"
-        [teamId]="team"
-      ></app-teams>
-    </div>
-  </ng-container>
+  <router-outlet></router-outlet>
 </div>
