@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { TeamModel, getTeams } from "../models/teams"; // Import Team model
+import { getPlayersTeamId, getTeamById, getTeams } from "../models/teams";
 
 export const getTeamsAll = async (
   _req: Request,
@@ -17,13 +17,14 @@ export const getTeamsAll = async (
   }
 };
 
-export const getTeamById = async (
+export const getTeamId = async (
   req: Request,
   res: Response
 ): Promise<Response | undefined> => {
   const { id } = req.params;
+
   try {
-    const team = await TeamModel.findById(id);
+    const team = await getTeamById(id);
     if (!team) {
       return res.status(404).json({ message: "Team not found" });
     }
@@ -34,18 +35,17 @@ export const getTeamById = async (
   }
 };
 
-// Assuming you have a way to link teams to a league (e.g., a 'leagueId' field)
-export const getTeamsByLeagueId = async (
+export const getPlayersByTeamId = async (
   req: Request,
   res: Response
 ): Promise<Response | undefined> => {
-  const { leagueId } = req.params;
+  const { id } = req.params;
   try {
-    const teams = await TeamModel.find({ leagueId });
+    const teams = await getPlayersTeamId(id);
     if (!teams) {
       return res
         .status(404)
-        .json({ message: "No teams found for this league" });
+        .json({ message: "No players found for this team" });
     }
     res.json(teams);
   } catch (err) {

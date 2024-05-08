@@ -9,18 +9,23 @@
     />
     <img src="assets/search.svg" alt="search icon" />
   </div>
-  <ng-container *ngIf="leagues$ | async as leagues">
-    <ul class="list-leagues" *ngIf="leagues.length > 0; else noLeagues">
-      <li *ngFor="let item of leagues; trackBy: trackById">
-        <a [routerLink]="['league', item._id]">{{ item.name }}</a>
-      </li>
-    </ul>
-    <ng-template #noLeagues>
-      <p class="no-leagues" *ngIf="searchTerm && !isLoading">
-        No Leagues found for "{{ searchTerm }}"
-      </p>
-    </ng-template>
+  <ng-container *ngIf="!isSelected">
+    <ng-container *ngIf="leagues$ | async as leagues">
+      <ul class="list-leagues" *ngIf="leagues.length > 0; else noLeagues">
+        <li *ngFor="let item of leagues; trackBy: trackById">
+          <a
+            [routerLink]="['league', item._id]"
+            (click)="selectLeague(item.name)"
+            >{{ item.name }}</a
+          >
+        </li>
+      </ul>
+      <ng-template #noLeagues>
+        <p class="no-leagues" *ngIf="searchTerm && !isLoading">
+          No Leagues found for "{{ searchTerm }}"
+        </p>
+      </ng-template>
+    </ng-container>
   </ng-container>
-
   <router-outlet></router-outlet>
 </div>

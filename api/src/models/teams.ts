@@ -1,15 +1,15 @@
-import mongoose, { Document } from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 
 export interface ITeam extends Document {
   name: string;
   thumbnail: string;
-  players: mongoose.Schema.Types.ObjectId[]; // Array of Player IDs (references)
+  players: Schema.Types.ObjectId[]; // Array of Player IDs (references)
 }
 
 const TeamSchema = new mongoose.Schema({
   name: { type: String, required: true },
   thumbnail: { type: String, required: true },
-  players: [{ type: mongoose.Schema.Types.ObjectId, ref: "Players" }], // Reference to Player model (if applicable)
+  players: [{ type: Schema.Types.ObjectId, ref: "players" }],
 });
 
 export const TeamModel = mongoose.model<ITeam>("teams", TeamSchema);
@@ -32,12 +32,9 @@ export const getTeamById = async (id: string): Promise<ITeam | null> => {
   }
 };
 
-export const getTeamsByLeagueId = async (
-  id: string
-): Promise<ITeam[] | null> => {
+export const getPlayersTeamId = async (id: string): Promise<ITeam | null> => {
   try {
-    // Assuming you have a way to link teams to a league (e.g., a 'leagueId' field)
-    return await TeamModel.find({ leagueId: id });
+    return await TeamModel.findById(id).populate("players");
   } catch (err) {
     console.error("Error fetching teams by league ID:", err);
     return null; // Or handle error appropriately

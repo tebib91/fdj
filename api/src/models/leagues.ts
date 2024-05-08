@@ -16,7 +16,7 @@ export const LeagueModel = mongoose.model<ILeague>("leagues", LeagueSchema);
 
 export const getLeagues = async (): Promise<ILeague[] | null> => {
   try {
-    return await LeagueModel.find(); // Populate teams
+    return await LeagueModel.find();
   } catch (err) {
     console.error("Error fetching leagues:", err);
     return null; // Or handle error appropriately
@@ -25,21 +25,15 @@ export const getLeagues = async (): Promise<ILeague[] | null> => {
 
 export const getLeagueById = async (id: string): Promise<ILeague | null> => {
   try {
-    console.log({ id });
-
-    return await LeagueModel.findById(id); // Populate teams
+    return await LeagueModel.findById(id);
   } catch (err) {
     console.error("Error fetching league by ID:", err);
     return null; // Or handle error appropriately
   }
 };
 
-export const getTeamLeagueById = async (
-  id: string
-): Promise<ILeague | null> => {
+export const getTeamsLeagueId = async (id: string): Promise<ILeague | null> => {
   try {
-    console.log({ id });
-
     return await LeagueModel.findById(id).populate("teams"); // Populate teams
   } catch (err) {
     console.error("Error fetching league by ID:", err);

@@ -4,7 +4,6 @@ import { Observable, of } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 import { League } from '../models/league.interface';
 import { Team } from '../models/team.interface';
-import { Player } from '../models/player.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -35,7 +34,7 @@ export class ApiService {
     return this.http.get<League>(`${this.baseUrl}/leagues/${_id}/teams`);
   }
 
-  getPlayersByTeamId(_id: string): Observable<Player[]> {
-    return this.http.get<Player[]>(`${this.baseUrl}/teams/${_id}/players`);
+  getPlayersByTeamId(_id: string): Observable<Team> {
+    return this.http.get<Team>(`${this.baseUrl}/teams/${_id}/players`);
   }
 }

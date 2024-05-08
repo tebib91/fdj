@@ -4,7 +4,8 @@ import { Observable, switchMap } from 'rxjs';
 import { ApiService } from '../../services/api.services';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-import { Player } from '../../models/player.interface';
+import { Team } from '../../models/team.interface';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-players',
@@ -16,19 +17,22 @@ import { Player } from '../../models/player.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayersComponent {
-  players$: Observable<Player[]> | undefined;
+  teamPlayers$: Observable<Team> | undefined;
 
   constructor(
     private playersService: ApiService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private location: Location
   ) {}
   ngOnInit() {
-    console.log('test');
-    this.players$ = this.route.paramMap.pipe(
+    this.teamPlayers$ = this.route.paramMap.pipe(
       switchMap((params: ParamMap) => {
-        return this.playersService.getPlayersByTeamId(params.get('teamId')!);
+        return this.playersService.getPlayersByTeamId(params.get('id')!);
       })
     );
+  }
+  back() {
+    this.location.back();
   }
 }

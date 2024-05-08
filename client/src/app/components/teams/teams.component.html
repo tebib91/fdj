@@ -1,13 +1,19 @@
 <div *ngIf="leagueTeams$ | async as leagueTeams" class="wrapper">
   <p>{{ leagueTeams.name }}</p>
-  <div class="list-teams">
-    <div
-      class="team-box"
-      *ngFor="let item of leagueTeams.teams"
-      (click)="gotoPlayers(item._id)"
-    >
-      <img [src]="item.thumbnail" [alt]="item.name" />
-      <p>{{ item.name }}</p>
+
+  <ng-container>
+    <div class="list-teams" *ngIf="leagueTeams.teams.length > 0; else noTeams">
+      <div
+        class="team-box"
+        *ngFor="let item of leagueTeams.teams"
+        (click)="gotoPlayers(item._id)"
+      >
+        <img [src]="item.thumbnail" [alt]="item.name" />
+        <p>{{ item.name }}</p>
+      </div>
     </div>
-  </div>
+    <ng-template #noTeams>
+      <p class="no-teams">No Team found for {{ leagueTeams.name }}</p>
+    </ng-template>
+  </ng-container>
 </div>

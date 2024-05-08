@@ -29,4 +29,12 @@
     }
   }
 
+  .no-teams {
+    background-color: var(--list-section);
+    border-radius: 20px;
+    height: 5rem;
+    margin-top: 2rem;
+    padding: 1rem;
+    text-align: center;
+  }
 }

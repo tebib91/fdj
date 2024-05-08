@@ -1,4 +1,5 @@
 import mongoose, { Document } from "mongoose";
+import { TeamModel } from "./teams";
 
 export interface IPlayer extends Document {
   name: string;
@@ -33,12 +34,9 @@ export const getPlayers = async (): Promise<IPlayer[] | null> => {
   }
 };
 
-export const getPlayersByTeamId = async (
-  id: string
-): Promise<IPlayer[] | null> => {
+export const getPlayersById = async (id: string): Promise<IPlayer | null> => {
   try {
-    // Assuming you have a way to link teams to a league (e.g., a 'leagueId' field)
-    return await PlayerModel.find({ teamId: id });
+    return await TeamModel.findById(id);
   } catch (err) {
     console.error("Error fetching teams by league ID:", err);
     return null; // Or handle error appropriately

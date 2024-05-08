@@ -3,7 +3,7 @@ import {
   getLeagueById,
   getLeagueByName,
   getLeagues,
-  getTeamLeagueById,
+  getTeamsLeagueId,
 } from "../models/leagues";
 
 export const getLeaguesAll = async (
@@ -50,7 +50,6 @@ export const getLeagueId = async (
   res: Response
 ): Promise<Response | undefined> => {
   const { id } = req.params;
-  console.log({ id });
 
   try {
     const league = await getLeagueById(id); // Populate teams
@@ -69,10 +68,9 @@ export const getTeamsByLeagueId = async (
   res: Response
 ): Promise<Response | undefined> => {
   const { id } = req.params;
-  console.log({ id });
 
   try {
-    const league = await getTeamLeagueById(id); // Populate teams
+    const league = await getTeamsLeagueId(id); // Populate teams
     if (!league) {
       return res.status(404).json({ message: "League not found" });
     }

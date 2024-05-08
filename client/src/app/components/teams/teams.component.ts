@@ -30,7 +30,6 @@ export class TeamsComponent {
     private route: ActivatedRoute
   ) {}
   ngOnInit() {
-    console.log('test');
     this.leagueTeams$ = this.route.paramMap.pipe(
       switchMap((params: ParamMap) => {
         return this.TeamService.getTeamsByLeagueId(params.get('id')!);

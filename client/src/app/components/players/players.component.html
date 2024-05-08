@@ -1,9 +1,36 @@
-<div *ngIf="players$ | async as players" class="wrapper">
-  <!-- <p>{{ teamPlayers.name }}</p> -->
-  <!-- <div class="list-teams">
-    <div class="team-box" *ngFor="let item of leaguePlayers.teams">
-      <img [src]="item.thumbnail" [alt]="item.name" />
-      <p>{{ item.name }}</p>
+<div *ngIf="teamPlayers$ | async as teamPlayers" class="wrapper">
+  <div class="top-bar">
+    <a (click)="back()">
+      <img
+        width="24"
+        height="24"
+        src="https://img.icons8.com/material-rounded/24/back--v1.png"
+        alt="back--v1"
+      />Back
+    </a>
+    <p>{{ teamPlayers.name }}</p>
+  </div>
+  <ng-container>
+    <div
+      class="list-players"
+      *ngIf="teamPlayers.players.length > 0; else noPlayers"
+    >
+      <div class="player-box" *ngFor="let item of teamPlayers.players">
+        <img [src]="item.thumbnail" [alt]="item.name" />
+        <div class="player-info">
+          <p>{{ item.name }}</p>
+          <p class="sub-info">{{ item.position }}</p>
+          <p class="sub-info">Born: {{ item.born }}</p>
+          <p class="sub-info price">
+            Price: {{ item.signin.amount }} | {{ item.signin.currency }}
+          </p>
+        </div>
+      </div>
     </div>
-  </div> -->
+    <ng-template #noPlayers>
+      <div class="no-players">
+        <p>No Players found for {{ teamPlayers.name }}</p>
+      </div>
+    </ng-template>
+  </ng-container>
 </div>
