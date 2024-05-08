@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { ApiService } from '../../services/api.services';
 import { Team } from '../../models/team.interface';
@@ -16,6 +16,8 @@ import { HttpClientModule } from '@angular/common/http';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamsComponent {
+  @Input({ required: true }) teamId!: string;
+
   team$: Observable<Team> | undefined;
 
   constructor(
@@ -24,18 +26,8 @@ export class TeamsComponent {
     private route: ActivatedRoute
   ) {}
   ngOnInit() {
-    console.log('test');
-    this.team$ = this.route.paramMap.pipe(
-      switchMap((params: ParamMap) => {
-        console.log(params.get('teamId'));
+    console.log('adsdas', { teamid: this.teamId });
 
-        return this.TeamService.getTeamsById(params.get('id')!);
-      })
-    );
-  }
-
-  gotoPlayer(player: any) {
-    const playerId = player ? player.id : null;
-    this.router.navigate(['/player', { id: playerId }]);
+    this.team$ = this.TeamService.getTeamsById(this.teamId);
   }
 }

@@ -13,11 +13,18 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { League } from '../../models/league.interface';
 import { Router, RouterModule } from '@angular/router';
+import { TeamsComponent } from '../teams/teams.component';
 
 @Component({
   selector: 'app-leagues',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule, RouterModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    HttpClientModule,
+    RouterModule,
+    TeamsComponent,
+  ],
   providers: [ApiService],
   templateUrl: './leagues.component.html',
   styleUrl: './leagues.component.scss',
@@ -29,6 +36,7 @@ export class LeaguesComponent {
 
   private searchTerms = new Subject<string>();
   leagues$: Observable<League[]>;
+  selectedLeague!: string[];
 
   constructor(private leagueService: ApiService, private router: Router) {
     this.leagues$ = this.searchTerms.pipe(
@@ -49,6 +57,11 @@ export class LeaguesComponent {
   }
   navigateToTeams(leagueId: string) {
     this.router.navigate(['/teams', leagueId]);
+  }
+
+  getTeams(teamsIds: string[]): string[] {
+    this.selectedLeague = teamsIds;
+    return this.selectedLeague;
   }
 
   trackById(index: number, item: League): string {

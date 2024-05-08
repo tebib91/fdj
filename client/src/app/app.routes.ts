@@ -9,11 +9,11 @@ export const routes: Routes = [
         (mod) => mod.LeaguesComponent
       ),
   },
-  {
-    path: 'team/:id',
-    loadComponent: () =>
-      import('./components/teams/teams.component').then(
-        (mod) => mod.TeamsComponent
-      ),
-  },
+  // {
+  //   path: 'team/:id',
+  //   loadComponent: () =>
+  //     import('./components/teams/teams.component').then(
+  //       (mod) => mod.TeamsComponent
+  //     ),
+  // },
 ];

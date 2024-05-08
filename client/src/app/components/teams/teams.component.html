@@ -1,5 +1,4 @@
-<p>teams works!</p>
-,
-<ng-container *ngIf="team$ | async as team">
-  {{ team.name }}
-</ng-container>
+<div class="team-box" *ngIf="team$ | async as team">
+  <img [src]="team.thumbnail" [alt]="team.name" />
+  <!-- {{ team.name }} -->
+</div>

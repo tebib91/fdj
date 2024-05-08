@@ -6,6 +6,7 @@ import cors from "cors";
 import express from "express";
 import { connectToDatabase } from "../config/db";
 import leguesRoute from "../routes/leagues";
+import teamsRoute from "../routes/teams";
 
 // Instantiate express
 const server = express();
@@ -22,5 +23,6 @@ server.use(express.json());
 
 // Initialize routes middleware
 server.use("/api/leagues", leguesRoute);
+server.use("/api/team", teamsRoute);
 
 export default server;
