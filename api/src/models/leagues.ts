@@ -16,3 +16,24 @@ export const LeagueModel = mongoose.model<ILeague>("leagues", LeagueSchema);
 
 export const getLeagues = () => LeagueModel.find();
 export const getLeagueById = (id: string) => LeagueModel.findOne({ id });
+export const getLeagueByName = (name: string): Promise<ILeague[] | null> =>
+  LeagueModel.find({
+    name: { $regex: name, $options: "i" },
+  });
+
+// TODO: check aggregate error on $search
+export const searchName = (name: string) =>
+  LeagueModel.aggregate([
+    {
+      $search: {
+        autocomplete: {
+          query: `${name}`,
+          path: "name",
+          fuzzy: {
+            maxEdits: 2,
+            prefixLength: 3,
+          },
+        },
+      },
+    },
+  ]);

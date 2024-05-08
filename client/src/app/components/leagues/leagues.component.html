@@ -1,0 +1,24 @@
+<div>
+  <div class="search-wrapper">
+    <input
+      class="search-input"
+      type="text"
+      placeholder="Search"
+      [(ngModel)]="searchTerm"
+      (input)="search()"
+    />
+    <img src="assets/search.svg" alt="search icon" />
+  </div>
+  <ng-container *ngIf="leagues$ | async as leagues">
+    <ul class="list-leagues" *ngIf="leagues.length > 0; else noLeagues">
+      <li *ngFor="let item of leagues; trackBy: trackById">
+        <a [routerLink]="['/team', item._id]">{{ item.name }}</a>
+      </li>
+    </ul>
+    <ng-template #noLeagues>
+      <p class="no-leagues" *ngIf="searchTerm && !isLoading">
+        No Leagues found for "{{ searchTerm }}"
+      </p>
+    </ng-template>
+  </ng-container>
+</div>
