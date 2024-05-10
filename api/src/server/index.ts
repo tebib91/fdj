@@ -8,6 +8,7 @@ import { connectToDatabase } from "../config/db";
 import leguesRoute from "../routes/leagues";
 import teamsRoute from "../routes/teams";
 import PlayersRoute from "../routes/players";
+import { logRequests } from "../middlewares/logger";
 
 // Instantiate express
 const server = express();
@@ -19,8 +20,9 @@ if (process.env.NODE_ENV !== "test") {
   connectToDatabase();
 }
 
-// server.use(cors());
+server.use(cors());
 server.use(express.json());
+server.use(logRequests);
 
 // Initialize routes middleware
 server.use("/api/leagues", leguesRoute);

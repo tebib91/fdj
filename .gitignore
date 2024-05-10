@@ -4,7 +4,7 @@ client/node_modules/
 
 # Compiled TypeScript files
 dist/
-
+api/build
 # Angular build artifacts
 client/dist/
 

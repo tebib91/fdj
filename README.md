@@ -35,12 +35,12 @@ npm install
 
 Create a .env file in the api directory and configure your environment variables. You can use the provided .env.example file as a template.
 
-### Running the Application
+### Running the Application with Docker
 
 Start the db:
 
 ```bash
-cd db
+cd fdj
 docker compose up --build
 ```
 
@@ -48,7 +48,16 @@ To restore data to mongo run commande inside mongoDb container:
 
 ```bash
 cd mongo-dump
- mongorestore --authenticationDatabase=admin --db fdj --username fdj --password fdj .
+mongorestore --authenticationDatabase=admin --db fdj --username fdj --password fdj .
+```
+
+### Running the Application Classic
+
+Start the db:
+
+```bash
+cd db
+docker compose up --build
 ```
 
 Start the backend server:
@@ -67,27 +76,12 @@ ng serve
 
 #### The frontend should now be accessible at http://localhost:4200/.
 
-### Deployment
-
-To deploy the application in production, follow these steps:
-
-Build the Angular application:
-
-```bash
-Copy code
-cd client
-ng build --prod
-```
-
-##### Deploy the built frontend files located in the client/dist directory to your preferred hosting provider.
-
-##### Set up and deploy the backend Node.js application. Ensure that environment variables are correctly configured for production.
-
 ##### Built With
 
 Angular - Frontend framework
 Node.js - Backend framework
 MongoDB - Database
+Docker - Dockerization
 
 ### Authors
 

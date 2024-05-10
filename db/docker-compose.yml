@@ -9,4 +9,4 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=fdj # Optional: Set root user (adjust password if needed)
       - MONGO_INITDB_ROOT_PASSWORD=fdj # Optional: Set root password
     volumes:
-      - ./data:data/mongo-dump
+      - ./mongo-dump:/mongo-dump
