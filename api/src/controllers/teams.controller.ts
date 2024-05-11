@@ -43,9 +43,7 @@ export const getPlayersByTeamId = async (
   try {
     const teams = await getPlayersTeamId(id);
     if (!teams) {
-      return res
-        .status(404)
-        .json({ message: "No players found for this team" });
+      return res.status(404).json({ message: "No team found" });
     }
     res.json(teams);
   } catch (err) {
